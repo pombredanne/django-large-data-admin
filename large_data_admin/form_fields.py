@@ -4,9 +4,9 @@ from django.db.models import get_model
 from widgets import ManyToManyWidget
 
 class ModelMultipleChoiceField(forms.ModelMultipleChoiceField):
-    def __init__(self, app_name, model_name, object_pk=1, initial=None, **kwargs):
+    def __init__(self, app_name, model_name, model_field=None, object_pk=None, initial=None, **kwargs):
         defaults = {
-            'widget': ManyToManyWidget(app_name, model_name, object_pk),
+            'widget': ManyToManyWidget(app_name, model_name, model_field, object_pk),
         }
         defaults.update(kwargs)
         if not 'queryset' in kwargs:

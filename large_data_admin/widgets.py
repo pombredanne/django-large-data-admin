@@ -9,10 +9,11 @@ import random
 class ManyToManyWidget(Widget):
     is_required = False
 
-    def __init__(self, app_name=None, model_name=None, object_pk=None, **kwargs):
+    def __init__(self, app_name=None, model_name=None, model_field=None, object_pk=None, **kwargs):
         self.app_name = app_name
         self.model_name = model_name
         self.object_pk = object_pk
+        self.model_field = model_field
         return super(self.__class__, self).__init__(**kwargs)
 
     def render(self, name, value, attrs=None, choices=()):
@@ -22,6 +23,6 @@ class ManyToManyWidget(Widget):
             "app": self.app_name,
             "model": self.model_name,
             "pk": self.object_pk,
-            "field": name,
+            "field": self.model_field or name,
             "prefix": str(random.randint(1000000000, 9999999999)),
         }))
