@@ -1,0 +1,43 @@
+<script type="text/javascript" src="{{STATIC_URL}}large_data_admin/jquery-1.9.1.min.js"></script>
+<script type="text/javascript" src="{{STATIC_URL}}large_data_admin/widget.js"></script>
+<link rel="stylesheet" type="text/css" href="{{STATIC_URL}}large_data_admin/widget.css">
+<script type="text/javascript">
+
+$(document).ready(function(){
+    var pk = window.location.pathname.match(/\d+/g)[0] || 0;
+    select_input("{{prefix}}_add", "/large_data_admin/add/{{app}}/{{model}}/"+pk+"/{{field}}/", 2, function (i){
+        $.get("/large_data_admin/add_process/{{app}}/{{model}}/"+pk+"/{{field}}/"+i[0]+"/");
+        setTimeout(function () {
+            num_selected("{{prefix}}_selected", "/large_data_admin/selected/{{app}}/{{model}}/"+pk+"/{{field}}/", 2);    
+        }, 2000)
+    });
+    select_input("{{prefix}}_rm", "/large_data_admin/rm/{{app}}/{{model}}/"+pk+"/{{field}}/", 2, function (i){
+        $.get("/large_data_admin/rm_process/{{app}}/{{model}}/"+pk+"/{{field}}/"+i[0]+"/");
+        setTimeout(function () {
+            num_selected("{{prefix}}_selected", "/large_data_admin/selected/{{app}}/{{model}}/"+pk+"/{{field}}/", 2);    
+        }, 2000)
+    });
+    num_selected("{{prefix}}_selected", "/large_data_admin/selected/{{app}}/{{model}}/"+pk+"/{{field}}/", 2);
+    check_input("{{prefix}}_check", "/large_data_admin/check/{{app}}/{{model}}/"+pk+"/{{field}}/", 2);
+})
+
+</script>
+
+<div class="m2mlw">
+    <div class="m2mlw-block">
+        <input id="{{prefix}}_add" type="text" placeholder="add">
+        <ul id="{{prefix}}_add_list"></ul>
+    </div>
+    <div class="m2mlw-block">
+        <input id="{{prefix}}_rm" type="text" placeholder="remove">
+        <ul id="{{prefix}}_rm_list"></ul>
+    </div>
+    <div class="m2mlw-block">
+        <input id="{{prefix}}_check" type="text" placeholder="check">
+        <div id="{{prefix}}_check_out" class="m2mlw-status">&nbsp;</div>
+        <ul id="{{prefix}}_check_list"></ul>
+    </div>
+    <div class="m2mlw-block">
+        <input id="{{prefix}}_selected" type="text" class="m2mlw-selected" disabled>
+    </div>
+</div>

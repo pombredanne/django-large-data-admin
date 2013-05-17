@@ -1,0 +1,10 @@
+!.gitkeep
+
+*.swp
+*~
+
+*.py[co]
+
+*.egg-info
+dist/*
+build/*

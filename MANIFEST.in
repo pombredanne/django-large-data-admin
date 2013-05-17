@@ -1,0 +1,2 @@
+recursive-include large_data_admin/static *
+recursive-include large_data_admin/templates *
