@@ -12,14 +12,10 @@ def add_json(request, app, model, pk, field):
 
     objs = KeyModel.objects.all()
     selected = getattr(instance, field).all()
-    print objs
-    print selected
-
     for obj in objs:
         if value in obj.__unicode__() and not obj in selected:
             data.append((obj.pk, obj.__unicode__()))
 
-    print data
     return HttpResponse(simplejson.dumps(data))
 
 def rm_json(request, app, model, pk, field):
@@ -61,7 +57,6 @@ def check_json(request, app, model, pk, field):
     KeyModel = getattr(instance, field).model
 
     objs = getattr(instance, field).all()
-    print objs
     for obj in objs:
         if value in obj.__unicode__():
             data.append((obj.pk, obj.__unicode__()))
