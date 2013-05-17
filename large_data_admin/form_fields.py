@@ -5,7 +5,6 @@ from widgets import ManyToManyWidget
 
 class ModelMultipleChoiceField(forms.ModelMultipleChoiceField):
     def __init__(self, app_name, model_name, object_pk=1, initial=None, **kwargs):
-        print self.creation_counter
         defaults = {
             'widget': ManyToManyWidget(app_name, model_name, object_pk),
         }
