@@ -4,6 +4,8 @@ from django.template import loader
 from django.utils.safestring import mark_safe
 from django.conf import settings
 
+import random
+
 class ManyToManyWidget(Widget):
     is_required = False
 
@@ -21,4 +23,5 @@ class ManyToManyWidget(Widget):
             "model": self.model_name,
             "pk": self.object_pk,
             "field": name,
+            "prefix": str(random.randint(1000000000, 9999999999)),
         }))
