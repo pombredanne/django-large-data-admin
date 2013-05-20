@@ -1,7 +1,7 @@
 from django import forms
 from django.db.models import get_model
 
-from widgets import ManyToManyWidget
+from widgets import ManyToManyWidget, SelectWidget
 
 class ModelMultipleChoiceField(forms.ModelMultipleChoiceField):
     def __init__(self, app_name, model_name, model_field=None, object_pk=None, initial=None, **kwargs):
@@ -14,3 +14,11 @@ class ModelMultipleChoiceField(forms.ModelMultipleChoiceField):
             super(ModelMultipleChoiceField, self).__init__(queryset=queryset, **defaults)
         else:
             super(ModelMultipleChoiceField, self).__init__(initial=initial, **defaults)
+
+class ModelChoiceField(forms.ModelChoiceField):
+    def __init__(self, to, **kwargs):
+        defaults = {
+            'widget': SelectWidget(to),
+        }
+        defaults.update(kwargs)
+        super(self.__class__, self).__init__(**defaults)

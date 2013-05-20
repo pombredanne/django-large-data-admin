@@ -7,4 +7,6 @@ urlpatterns = patterns('large_data_admin.views',
     url(r'^rm/(?P<app>[\w\-]+)/(?P<model>[\w\-]+)/(?P<pk>[\d]+)/(?P<field>[\w\-]+)/$', 'rm_json'),
     url(r'^check/(?P<app>[\w\-]+)/(?P<model>[\w\-]+)/(?P<pk>[\d]+)/(?P<field>[\w\-]+)/$', 'check_json'),
     url(r'^selected/(?P<app>[\w\-]+)/(?P<model>[\w\-]+)/(?P<pk>[\d]+)/(?P<field>[\w\-]+)/$', 'selected_json'),
+
+    url(r'^select/add/(?P<app>[\w\-]+)/(?P<model>[\w\-]+)/$', 'select_add_json'),
 )
