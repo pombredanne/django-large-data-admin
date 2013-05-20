@@ -38,8 +38,11 @@ class SelectWidget(Widget):
         return super(self.__class__, self).__init__(**kwargs)
 
     def render(self, name, value, attrs=None, choices=()):
-        Model = get_model(self.app_name, self.model.__name__)
-        text_value = Model.objects.get(pk=value).__unicode__()
+        if value:
+            Model = get_model(self.app_name, self.model.__name__)
+            text_value = Model.objects.get(pk=value).__unicode__()
+        else:
+            text_value = ""
         return mark_safe(loader.render_to_string("large_data_admin/select.html", {
             "STATIC_URL": settings.STATIC_URL,
             "selected": value,
