@@ -7,7 +7,7 @@ $(document).ready(function(){
     if (window.location.pathname.match(/\d+/g)) var pk = window.location.pathname.match(/\d+/g)[0] || 0;
     else var pk = 0;
 
-    select_input("{{prefix}}_add", "/large_data_admin/select/add/{{app}}/{{model}}/", 2, function (i){
+    select_input("{{prefix}}_add", "/large_data_admin/select/add/{{model}}/", 2, function (i){
         $("#{{prefix}}_select_id").val(i[0]);
         $("#{{prefix}}_select_value").val(i[1]);
     });

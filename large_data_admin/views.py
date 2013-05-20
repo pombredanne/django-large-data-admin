@@ -76,11 +76,17 @@ def selected_json(request, app, model, pk, field):
     return HttpResponse(simplejson.dumps(objs.count()))
 
 
-def select_add_json(request, app, model):
+def select_add_json(request, model):
     value = request.GET.get("q")
     data = []
 
-    Model = get_model(app, model)
+    import importlib
+    model = model.split(".")
+    class_name = model[-1]
+    module_name = ".".join(model[:-1])
+
+    module = importlib.import_module(module_name)
+    Model = getattr(module, class_name)
     objs = Model.objects.all()
     for obj in objs:
         if slugify(value) in slugify(obj.__unicode__()):
