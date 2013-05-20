@@ -1,6 +1,7 @@
 from django.db.models import get_model
 from django.http import HttpResponse
 from django.utils import simplejson
+from django.template.defaultfilters import slugify
 
 def add_json(request, app, model, pk, field):
     value = request.GET.get("q")
@@ -13,7 +14,7 @@ def add_json(request, app, model, pk, field):
     objs = KeyModel.objects.all()
     selected = getattr(instance, field).all()
     for obj in objs:
-        if value in obj.__unicode__() and not obj in selected:
+        if slugify(value) in slugify(obj.__unicode__()) and not obj in selected:
             data.append((obj.pk, obj.__unicode__()))
 
     return HttpResponse(simplejson.dumps(data))
@@ -27,7 +28,7 @@ def rm_json(request, app, model, pk, field):
     KeyModel = getattr(instance, field).model
 
     for obj in getattr(instance, field).all():
-        if value in obj.__unicode__():
+        if slugify(value) in slugify(obj.__unicode__()):
             data.append((obj.pk, obj.__unicode__()))
 
     return HttpResponse(simplejson.dumps(data))
@@ -58,7 +59,7 @@ def check_json(request, app, model, pk, field):
 
     objs = getattr(instance, field).all()
     for obj in objs:
-        if value in obj.__unicode__():
+        if slugify(value) in slugify(obj.__unicode__()):
             data.append((obj.pk, obj.__unicode__()))
 
     return HttpResponse(simplejson.dumps(data))
