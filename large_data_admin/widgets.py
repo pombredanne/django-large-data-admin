@@ -31,9 +31,10 @@ class ManyToManyWidget(Widget):
 class SelectWidget(Widget):
     is_required = False
 
-    def __init__(self, model, **kwargs):
+    def __init__(self, model, blank, **kwargs):
         self.model = model
         self.str_model = u"%s.%s"%(model.__module__, model.__name__)
+        self.blank = blank
         return super(self.__class__, self).__init__(**kwargs)
 
     def render(self, name, value, attrs=None, choices=()):
@@ -46,6 +47,7 @@ class SelectWidget(Widget):
             "STATIC_URL": settings.STATIC_URL,
             "selected": value,
             "model": self.str_model,
+            "blank": self.blank,
             "field": name,
             "text_value": text_value,
             "prefix": str(random.randint(1000000000, 9999999999)),

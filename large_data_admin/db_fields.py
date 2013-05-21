@@ -20,14 +20,16 @@ class ManyToManyField(models.ManyToManyField):
         return super(self.__class__, self).formfield(**defaults)
 
 class ForeignKey(models.ForeignKey):
-    def __init__(self, to, **kwargs):
+    def __init__(self, to, blank=False, **kwargs):
         self.to = to
+        self.blank = blank
         super(self.__class__, self).__init__(to, **kwargs)
 
     def formfield(self, **kwargs):
         defaults = {
             'form_class': form_fields.ModelChoiceField,
             "to": self.to,
+            "blank": self.blank,
         }
         defaults.update(kwargs)
         return super(self.__class__, self).formfield(**defaults)

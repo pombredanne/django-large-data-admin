@@ -11,6 +11,11 @@ $(document).ready(function(){
         $("#{{prefix}}_select_id").val(i[0]);
         $("#{{prefix}}_select_value").val(i[1]);
     });
+
+    $("#{{prefix}}_remove").click(function () {
+        $("#{{prefix}}_select_id").val("");
+        $("#{{prefix}}_select_value").val("");
+    })
 })
 
 </script>
@@ -23,5 +28,8 @@ $(document).ready(function(){
     <div class="m2mlw-block">
         <input id="{{prefix}}_select_value" value="{{text_value}}" type="text" class="m2mlw" disabled>
         <input id="{{prefix}}_select_id" type="hidden" name="{{field}}" class="m2mlw">
+    </div>
+    <div class="m2mlw-block">
+        <input id="{{prefix}}_remove" value="remove" type="button" class="m2mlw">
     </div>
 </div>
