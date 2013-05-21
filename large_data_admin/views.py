@@ -4,7 +4,7 @@ from django.utils import simplejson
 from django.template.defaultfilters import slugify
 
 def add_json(request, app, model, pk, field):
-    value = request.GET.get("q")
+    value = request.GET.get("q", "")
     data = []
 
     Model = get_model(app, model)
@@ -20,7 +20,7 @@ def add_json(request, app, model, pk, field):
     return HttpResponse(simplejson.dumps(data))
 
 def rm_json(request, app, model, pk, field):
-    value = request.GET.get("q")
+    value = request.GET.get("q", "")
     data = []
 
     Model = get_model(app, model)
@@ -50,7 +50,7 @@ def rm_process(request, app, model, pk, field, value):
     return HttpResponse("")
 
 def check_json(request, app, model, pk, field):
-    value = request.GET.get("q")
+    value = request.GET.get("q", "")
     data = []
 
     Model = get_model(app, model)
@@ -77,7 +77,7 @@ def selected_json(request, app, model, pk, field):
 
 
 def select_add_json(request, model):
-    value = request.GET.get("q")
+    value = request.GET.get("q", "")
     data = []
 
     import importlib
