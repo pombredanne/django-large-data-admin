@@ -93,3 +93,36 @@ def select_add_json(request, model):
             data.append((obj.pk, obj.__unicode__()))
 
     return HttpResponse(simplejson.dumps(data))
+
+def many_to_namy_list_add_view(request, app, model, pk, field):
+    value = request.GET.get("q", "")
+    data = []
+
+    Model = get_model(app, model)
+    instance = Model.objects.get(pk=pk)
+    KeyModel = getattr(instance, field).model
+
+    objs = KeyModel.objects.all()
+    selected = getattr(instance, field).all()
+    for obj in objs:
+        if slugify(value) in slugify(obj.__unicode__()) and not obj in selected:
+            data.append((obj.pk, obj.__unicode__()))
+
+    return HttpResponse(simplejson.dumps(data))
+
+
+def many_to_namy_list_rm_view(request, app, model, pk, field):
+    value = request.GET.get("q", "")
+    data = []
+
+    Model = get_model(app, model)
+    instance = Model.objects.get(pk=pk)
+    KeyModel = getattr(instance, field).model
+
+    objs = KeyModel.objects.all()
+    selected = getattr(instance, field).all()
+    for obj in objs:
+        if slugify(value) in slugify(obj.__unicode__()) and not obj in selected:
+            data.append((obj.pk, obj.__unicode__()))
+
+    return HttpResponse(simplejson.dumps(data))
