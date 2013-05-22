@@ -5,7 +5,7 @@ $(document).ready(function(){
 
     $(".link").click(function () {
         item_pk = $(this).attr("data")
-        $.get("/large_data_admin/add_process/{{app}}/{{model}}/"+pk+"/{{field}}/"+item_pk+"/");
+        $.get("/large_data_admin/rm_process/{{app}}/{{model}}/"+pk+"/{{field}}/"+item_pk+"/");
         $(this).remove();
 
     })
