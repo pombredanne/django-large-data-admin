@@ -2,6 +2,8 @@ from django.db.models import get_model
 from django.http import HttpResponse
 from django.utils import simplejson
 from django.template.defaultfilters import slugify
+from django.shortcuts import render_to_response
+from django.conf import settings
 
 def add_json(request, app, model, pk, field):
     value = request.GET.get("q", "")
@@ -108,7 +110,14 @@ def many_to_namy_list_add_view(request, app, model, pk, field):
         if slugify(value) in slugify(obj.__unicode__()) and not obj in selected:
             data.append((obj.pk, obj.__unicode__()))
 
-    return HttpResponse(simplejson.dumps(data))
+    return render_to_response("large_data_admin/widget_list_add.html",
+        {
+            "data": data,
+            "STATIC_URL": settings.STATIC_URL,
+            "app": app,
+            "model": model,
+            "field": field,
+        },)
 
 
 def many_to_namy_list_rm_view(request, app, model, pk, field):
