@@ -2,9 +2,13 @@
 <script type="text/javascript" src="{{STATIC_URL}}large_data_admin/widget.js"></script>
 <link rel="stylesheet" type="text/css" href="{{STATIC_URL}}large_data_admin/widget.css">
 <script type="text/javascript">
-
 $(document).ready(function(){
     var pk = window.location.pathname.match(/\d+/g)[0] || 0;
+
+    $("#{{prefix}}_list_add").attr("href", "/large_data_admin/many-to-many/list/add/{{app}}/{{model}}/"+pk+"/{{field}}/");
+    $("#{{prefix}}_list_rm").attr("href", "/large_data_admin/many-to-many/list/rm/{{app}}/{{model}}/"+pk+"/{{field}}/");
+    // $("#{{prefix}}_list_add").attr("onclick",'return showAddAnotherPopup(this);');
+
     select_input("{{prefix}}_add", "/large_data_admin/add/{{app}}/{{model}}/"+pk+"/{{field}}/", 2, function (i){
         $.get("/large_data_admin/add_process/{{app}}/{{model}}/"+pk+"/{{field}}/"+i[0]+"/");
         setTimeout(function () {
@@ -20,7 +24,6 @@ $(document).ready(function(){
     num_selected("{{prefix}}_selected", "/large_data_admin/selected/{{app}}/{{model}}/"+pk+"/{{field}}/", 2);
     check_input("{{prefix}}_check", "/large_data_admin/check/{{app}}/{{model}}/"+pk+"/{{field}}/", 2);
 })
-
 </script>
 <div class="m2mlw">
     <div class="m2mlw-block">
@@ -40,9 +43,9 @@ $(document).ready(function(){
         <input id="{{prefix}}_selected" type="text" class="m2mlw-selected" disabled>
     </div>
     <div class="m2mlw-block">
-        <button id="{{prefix}}_list_add" class="" onclick="return false;">add</button>
+        <a id="{{prefix}}_list_add" target="blank">add</a>
     </div>
     <div class="m2mlw-block">
-        <button id="{{prefix}}_list_remove" class="" onclick="return false;">remove</button>
+        <a id="{{prefix}}_list_rm" target="blank">remove</a>
     </div>
 </div>
