@@ -1,7 +1,7 @@
 django-large-data-admin
 =======================
 
-Rename Django app label in admin
+Admin widgets for managing large data in ForeignKey and ManyToMany and toher.
 
 Authors
 -------
