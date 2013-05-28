@@ -1,7 +1,32 @@
-function select_input(id, url, min_length, callback){
+Array.prototype.remove = function(from, to) {
+  var rest = this.slice((to || from) + 1 || this.length);
+  this.length = from < 0 ? this.length + from : from;
+  return this.push.apply(this, rest);
+};
+
+function str2list(s){
+    if (s) {
+        a = s.split(",");
+        for (i = 0; i < a.length ; i++) { if (! a[i]) { a.pop(i); } }
+        return a;   
+    }
+    else return []
+}
+
+function str2intList(s){
+    a = str2list(s);
+    for (i = 0; i < a.length ; i++) a[i] = parseInt(a[i]);
+    return a;
+}
+
+function list2str(l){
+    return l.toString();
+}
+
+function select_input(id, selected_id, url, min_length, callback){
     $("#"+id).keyup(function() {
         if ($("#"+id).val().length > min_length - 1){
-            $.get(url+"?q="+$("#"+id).val(), function (d){
+            $.get(url+"?q="+$("#"+id).val()+"&s="+$("#"+selected_id).val(), function (d){
                 d = JSON.parse(d);
                 $("#"+id+"_list").empty();
                 d.forEach(function (i) {
@@ -17,10 +42,10 @@ function select_input(id, url, min_length, callback){
     })
 }
 
-function check_input(id, url, min_length, callback){
+function check_input(id, selected_id, url, min_length, callback){
     $("#"+id).keyup(function() {
         if ($("#"+id).val().length > min_length - 1){
-            $.get(url+"?q="+$("#"+id).val(), function (d){
+            $.get(url+"?q="+$("#"+id).val()+"&s="+$("#"+selected_id).val(), function (d){
                 d = JSON.parse(d);
                 $("#"+id+"_out").removeClass("color-red");
                 $("#"+id+"_out").removeClass("color-green");
@@ -40,13 +65,5 @@ function check_input(id, url, min_length, callback){
                 })
             })
         }
-    })
-}
-
-
-function num_selected(id, url, callback){
-    $.get(url, function (d){
-        d = JSON.parse(d);
-        $("#"+id).val(d);
     })
 }

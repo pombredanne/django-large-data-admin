@@ -1,0 +1,48 @@
+<script type="text/javascript" src="{{STATIC_URL}}large_data_admin/jquery-1.9.1.min.js"></script>
+<script type="text/javascript" src="{{STATIC_URL}}large_data_admin/m2m/widget.js"></script>
+<link rel="stylesheet" type="text/css" href="{{STATIC_URL}}large_data_admin/m2m/widget.css">
+<script type="text/javascript">
+$(document).ready(function(){
+
+    select_input("{{name}}_add", "{{name}}", "/large_data_admin/m2m/add/{{model_str}}/", 2, function (i){
+        selected = str2intList($("#{{name}}").val())
+        selected.push(i[0])
+        $("#{{name}}").val(selected.toString());
+    });
+
+    select_input("{{name}}_rm", "{{name}}", "/large_data_admin/m2m/rm/{{model_str}}/", 2, function (i){
+        selected = str2intList($("#{{name}}").val())
+        index = selected.indexOf(i[0]);
+        selected.remove(index);
+        $("#{{name}}").val(selected.toString());
+    });
+
+    check_input("{{name}}_check", "{{name}}", "/large_data_admin/m2m/check/{{model_str}}/", 2);
+
+    setInterval(function () {
+        $("#{{name}}_selected").val(str2list($("#{{name}}").val()).length);
+    }, 100)
+
+});
+</script>
+
+
+<input type="hidden" name="{{name}}" id="{{name}}" value="{{value}}">
+<div class="m2mlw">
+    <div class="m2mlw-block">
+        <input id="{{name}}_add" type="text" placeholder="add">
+        <ul id="{{name}}_add_list"></ul>
+    </div>
+    <div class="m2mlw-block">
+        <input id="{{name}}_rm" type="text" placeholder="remove">
+        <ul id="{{name}}_rm_list"></ul>
+    </div>
+    <div class="m2mlw-block">
+        <input id="{{name}}_check" type="text" placeholder="check">
+        <div id="{{name}}_check_out" class="m2mlw-status">&nbsp;</div>
+        <ul id="{{name}}_check_list"></ul>
+    </div>
+    <div class="m2mlw-block">
+        <input id="{{name}}_selected" type="text" class="m2mlw-selected" disabled>
+    </div>
+</div>

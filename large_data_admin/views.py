@@ -1,67 +1,72 @@
-from django.db.models import get_model
+from django.db.models import get_model as django_get_model
 from django.http import HttpResponse
 from django.utils import simplejson
 from django.template.defaultfilters import slugify
 from django.shortcuts import render_to_response
 from django.conf import settings
 
-def add_json(request, app, model, pk, field):
-    value = request.GET.get("q", "")
+import importlib
+
+def get_model(model_str):
+    model = model_str.split(".")
+    class_name = model[-1]
+    module_name = ".".join(model[:-1])
+    module = importlib.import_module(module_name)
+    return getattr(module, class_name)
+
+def add_json(request, model_str):
     data = []
 
-    Model = get_model(app, model)
-    instance = Model.objects.get(pk=pk)
-    KeyModel = getattr(instance, field).model
+    q = request.GET.get("q", "")
+    exclude = []
+    for e in request.GET.get("s", "").split(","):
+        try:
+            exclude.append(int(e))
+        except ValueError:
+            pass
 
-    objs = KeyModel.objects.all()
-    selected = getattr(instance, field).all()
-    for obj in objs:
-        if slugify(value) in slugify(obj.__unicode__()) and not obj in selected:
+    Model = get_model(model_str)
+
+    for obj in Model.objects.exclude(pk__in=exclude):
+        if slugify(q) in slugify(obj.__unicode__()) and not obj.pk in exclude:
             data.append((obj.pk, obj.__unicode__()))
 
     return HttpResponse(simplejson.dumps(data))
 
-def rm_json(request, app, model, pk, field):
-    value = request.GET.get("q", "")
+def rm_json(request, model_str):
     data = []
 
-    Model = get_model(app, model)
-    instance = Model.objects.get(pk=pk)
-    KeyModel = getattr(instance, field).model
+    q = request.GET.get("q", "")
+    selected = []
+    for s in request.GET.get("s", "").split(","):
+        try:
+            selected.append(int(s))
+        except ValueError:
+            pass
 
-    for obj in getattr(instance, field).all():
-        if slugify(value) in slugify(obj.__unicode__()):
+    Model = get_model(model_str)
+
+    for obj in Model.objects.filter(pk__in=selected):
+        if slugify(q) in slugify(obj.__unicode__()):
             data.append((obj.pk, obj.__unicode__()))
 
     return HttpResponse(simplejson.dumps(data))
 
-def add_process(request, app, model, pk, field, value):
-    Model = get_model(app, model)
-    instance = Model.objects.get(pk=pk)
-    KeyModel = getattr(instance, field).model
-
-    getattr(instance, field).add(value)
-    return HttpResponse("")
-
-def rm_process(request, app, model, pk, field, value):
-    Model = get_model(app, model)
-    instance = Model.objects.get(pk=pk)
-    KeyModel = getattr(instance, field).model
-
-    getattr(instance, field).remove(value)
-    return HttpResponse("")
-
-def check_json(request, app, model, pk, field):
-    value = request.GET.get("q", "")
+def check_json(request, model_str):
     data = []
 
-    Model = get_model(app, model)
-    instance = Model.objects.get(pk=pk)
-    KeyModel = getattr(instance, field).model
+    q = request.GET.get("q", "")
+    selected = []
+    for s in request.GET.get("s", "").split(","):
+        try:
+            selected.append(int(s))
+        except ValueError:
+            pass
 
-    objs = getattr(instance, field).all()
-    for obj in objs:
-        if slugify(value) in slugify(obj.__unicode__()):
+    Model = get_model(model_str)
+
+    for obj in Model.objects.filter(pk__in=selected):
+        if slugify(q) in slugify(obj.__unicode__()):
             data.append((obj.pk, obj.__unicode__()))
 
     return HttpResponse(simplejson.dumps(data))
@@ -78,7 +83,7 @@ def selected_json(request, app, model, pk, field):
     return HttpResponse(simplejson.dumps(objs.count()))
 
 
-def select_add_json(request, model):
+def select_add_json(request, model, pk, field):
     value = request.GET.get("q", "")
     data = []
 
