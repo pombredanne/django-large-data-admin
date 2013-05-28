@@ -9,8 +9,4 @@ class ModelMultipleChoiceField(forms.ModelMultipleChoiceField):
 
 class ModelChoiceField(forms.ModelChoiceField):
     def __init__(self, model_str, **kwargs):
-        defaults = {
-            'widget': SelectWidget(model_str),
-        }
-        defaults.update(kwargs)
-        super(ModelChoiceField, self).__init__(**defaults)
+        super(ModelChoiceField, self).__init__(widget=SelectWidget(model_str), **kwargs)

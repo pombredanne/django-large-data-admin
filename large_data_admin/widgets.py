@@ -6,8 +6,6 @@ from django.conf import settings
 from helpers import get_model
 
 class ManyToManyWidget(Widget):
-    is_required = False
-
     def __init__(self, model_str, **kwargs):
         self.model_str = model_str
         return super(self.__class__, self).__init__(**kwargs)
@@ -31,8 +29,6 @@ class ManyToManyWidget(Widget):
         }))
 
 class SelectWidget(Widget):
-    is_required = False
-
     def __init__(self, model_str, **kwargs):
         self.model_str = model_str
         return super(SelectWidget, self).__init__(**kwargs)
