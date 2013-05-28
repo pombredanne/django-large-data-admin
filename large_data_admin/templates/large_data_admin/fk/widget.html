@@ -1,0 +1,33 @@
+<script type="text/javascript" src="{{STATIC_URL}}large_data_admin/jquery-1.9.1.min.js"></script>
+<script type="text/javascript" src="{{STATIC_URL}}large_data_admin/m2m/widget.js"></script>
+<link rel="stylesheet" type="text/css" href="{{STATIC_URL}}large_data_admin/m2m/widget.css">
+<script type="text/javascript">
+
+$(document).ready(function(){
+
+    select_input("{{name}}_add", "", "/large_data_admin/fk/add/{{model_str}}/", 2, function (i){
+        $("#{{name}}").val(i[0]);
+        $("#{{name}}_value").val(i[1]);
+    });
+
+    $("#{{name}}_remove").click(function () {
+        $("#{{name}}").val("");
+        $("#{{name}}_value").val("");
+    })
+})
+
+</script>
+
+<div class="m2mlw">
+    <div class="m2mlw-block">
+        <input id="{{name}}_add" type="text" placeholder="add">
+        <ul id="{{name}}_add_list"></ul>
+    </div>
+    <div class="m2mlw-block">
+        <input id="{{name}}_value" value="{{text_value}}" type="text" class="m2mlw" disabled>
+        <input id="{{name}}" type="hidden" name="{{name}}" class="m2mlw" value="{{value}}">
+    </div>
+    <div class="m2mlw-block">
+        <input id="{{name}}_remove" value="remove" type="button" class="m2mlw">
+    </div>
+</div>

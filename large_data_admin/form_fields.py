@@ -7,10 +7,10 @@ class ModelMultipleChoiceField(forms.ModelMultipleChoiceField):
     def __init__(self, model_str, **kwargs):
         super(ModelMultipleChoiceField, self).__init__(widget=ManyToManyWidget(model_str), **kwargs)
 
-class ModelChoiceField(forms.ModelMultipleChoiceField):
-    def __init__(self, to, blank, **kwargs):
+class ModelChoiceField(forms.ModelChoiceField):
+    def __init__(self, model_str, **kwargs):
         defaults = {
-            'widget': SelectWidget(to, blank),
+            'widget': SelectWidget(model_str),
         }
         defaults.update(kwargs)
-        super(self.__class__, self).__init__(**defaults)
+        super(ModelChoiceField, self).__init__(**defaults)
