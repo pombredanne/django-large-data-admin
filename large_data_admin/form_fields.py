@@ -5,8 +5,16 @@ from widgets import ManyToManyWidget, SelectWidget
 
 class ModelMultipleChoiceField(forms.ModelMultipleChoiceField):
     def __init__(self, model_str, **kwargs):
-        super(ModelMultipleChoiceField, self).__init__(widget=ManyToManyWidget(model_str), **kwargs)
+        defaults = {
+            'widget': ManyToManyWidget(model_str),
+        }
+        defaults.update(kwargs)
+        super(ModelMultipleChoiceField, self).__init__(**defaults)
 
 class ModelChoiceField(forms.ModelChoiceField):
     def __init__(self, model_str, **kwargs):
-        super(ModelChoiceField, self).__init__(widget=SelectWidget(model_str), **kwargs)
+        defaults = {
+            'widget': SelectWidget(model_str),
+        }
+        defaults.update(kwargs)
+        super(ModelChoiceField, self).__init__(**defaults)
