@@ -34,7 +34,7 @@ class SelectWidget(Widget):
         return super(SelectWidget, self).__init__(**kwargs)
 
     def render(self, name, value, attrs=None):
-        if value:
+        if value and not "None":
             text_value = get_model(self.model_str).objects.get(pk=value).__unicode__()
         else:
             text_value = ""
