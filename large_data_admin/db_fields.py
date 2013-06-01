@@ -17,7 +17,7 @@ class ManyToManyField(models.ManyToManyField):
 
     def south_field_triple(self):
         from south.modelsinspector import introspector
-        field_class = "django.db.models.fields.ManyToManyField"
+        field_class = "django.db.models.ManyToManyField"
         args, kwargs = introspector(self)
         return (field_class, args, kwargs)
 
@@ -36,6 +36,6 @@ class ForeignKey(models.ForeignKey):
 
     def south_field_triple(self):
         from south.modelsinspector import introspector
-        field_class = "django.db.models.fields.ForeignKey"
+        field_class = "django.db.models.ForeignKey"
         args, kwargs = introspector(self)
         return (field_class, args, kwargs)
