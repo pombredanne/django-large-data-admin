@@ -5,7 +5,7 @@ from setuptools import setup, find_packages
 
 setup(
     name = "django-large-data-admin",
-    version = "1.3.4",
+    version = "1.3.5",
     url = 'http://ondrejsika.com/docs/django-large-data-admin/',
     download_url = 'https://github.com/sikaondrej/django-large-data-admin/',
     license = 'GNU LGPL v.3',

@@ -34,7 +34,7 @@ class SelectWidget(Widget):
         return super(SelectWidget, self).__init__(**kwargs)
 
     def render(self, name, value, attrs=None):
-        if value and not "None":
+        if value and value != "None":
             text_value = get_model(self.model_str).objects.get(pk=value).__unicode__()
         else:
             text_value = ""
@@ -43,6 +43,6 @@ class SelectWidget(Widget):
             "STATIC_URL": settings.STATIC_URL,
             "name": name,
             "value": value,
-            "text_value": text_value,
+            "value_str": text_value,
             "model_str": self.model_str,
         }))
