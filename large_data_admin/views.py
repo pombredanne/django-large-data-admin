@@ -74,3 +74,26 @@ def fk_add_json(request, model_str):
             data.append((obj.pk, obj.__unicode__()))
 
     return HttpResponse(simplejson.dumps(data))
+
+def filter_json(request, model_str, field):
+    data = []
+
+    q = request.GET.get("q", "")
+    exclude = []
+    for e in request.GET.get("s", "").split(","):
+        try:
+            exclude.append(int(e))
+        except ValueError:
+            pass
+
+    Model = get_model(model_str)
+
+    for obj in Model.objects.exclude(pk__in=exclude):
+        try:
+            obj_attr = getattr(obj, field)
+        except AttributeError:
+            obj_attr = obj.__unicode__()
+        if slugify(q) in slugify(obj_attr) and not obj.pk in exclude:
+            data.append((obj.pk, obj.__unicode__(), obj_attr))
+
+    return HttpResponse(simplejson.dumps(data))
