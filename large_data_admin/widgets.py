@@ -43,6 +43,6 @@ class SelectWidget(Widget):
             "STATIC_URL": settings.STATIC_URL,
             "name": name,
             "value": value,
-            "value_str": text_value,
+            "text_value": text_value,
             "model_str": self.model_str,
         }))
