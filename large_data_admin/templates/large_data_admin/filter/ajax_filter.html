@@ -1,14 +1,14 @@
 {% load i18n %}
 <script type="text/javascript" src="{{spec.STATIC_URL}}large_data_admin/jquery-1.9.1.min.js"></script>
 <script type="text/javascript">
-function select_input(id, selected_id, url, min_length, callback){
+function select_input(id, selected_id, field, url, min_length, callback){
     $("#"+id).keyup(function() {
         if ($("#"+id).val().length > min_length - 1){
             $.get(url+"?q="+$("#"+id).val()+"&s="+$("#"+selected_id).val(), function (d){
                 d = JSON.parse(d);
                 $("#"+id+"_list").empty();
                 d.forEach(function (i) {
-                    $("#"+id+"_list").append("<li><a href=\"?{{spec.field}}="+i[2]+"\" >"+i[1]+"</a></li>");
+                    $("#"+id+"_list").append("<li><a href=\"?"+field+"="+i[2]+"\" >"+i[1]+"</a></li>");
                     $("#"+id+i[0]).click(function(){
                         $("#"+id+"_list").empty();
                         $("#"+id).val("");
@@ -22,7 +22,7 @@ function select_input(id, selected_id, url, min_length, callback){
 
 $(document).ready(function(){
 
-    select_input("{{spec.random}}_add", "", "/large_data_admin/filter/{{spec.model}}/{{spec.field}}/", 2, function (i){
+    select_input("{{spec.random}}_add", "", "{{spec.field}}", "/large_data_admin/filter/{{spec.model}}/{{spec.field}}/", 2, function (i){
     });
 })
 </script>
