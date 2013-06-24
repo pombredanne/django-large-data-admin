@@ -2,8 +2,14 @@
 <script type="text/javascript" src="{{STATIC_URL}}large_data_admin/m2m/widget.js"></script>
 <link rel="stylesheet" type="text/css" href="{{STATIC_URL}}large_data_admin/m2m/widget.css">
 <script type="text/javascript">
+$(document).ready(function(){
+    $(".rm").click(function () {
+        $(this).remove();
+        selected.pop($(this).attr("objId"));
+    });
+});
 </script>
 
 {% for obj in objs %}
-{{obj}}
+<a href="#" class="rm" objId="{{obj.pk}}">{{obj}}</a>
 {% endfor %}
