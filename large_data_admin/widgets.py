@@ -38,6 +38,7 @@ class SelectWidget(Widget):
             text_value = get_model(self.model_str).objects.get(pk=value).__unicode__()
         else:
             text_value = ""
+            value = ""
 
         return mark_safe(loader.render_to_string("large_data_admin/fk/widget.html", {
             "STATIC_URL": settings.STATIC_URL,
