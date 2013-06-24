@@ -39,3 +39,22 @@ class ForeignKey(models.ForeignKey):
         field_class = "django.db.models.ForeignKey"
         args, kwargs = introspector(self)
         return (field_class, args, kwargs)
+
+class OneToOneField(models.OneToOneField):
+    def __init__(self, to, **kwargs):
+        self.model_str = u"%s.%s"%(to.__module__, to.__name__)
+        super(OneToOneField, self).__init__(to, **kwargs)
+
+    def formfield(self, **kwargs):
+        defaults = {
+            'form_class': form_fields.ModelChoiceField,
+            "model_str": self.model_str,
+        }
+        defaults.update(kwargs)
+        return super(OneToOneField, self).formfield(**defaults)
+
+    def south_field_triple(self):
+        from south.modelsinspector import introspector
+        field_class = "django.db.models.OneToOneField"
+        args, kwargs = introspector(self)
+        return (field_class, args, kwargs)
