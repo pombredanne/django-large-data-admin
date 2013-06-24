@@ -24,7 +24,7 @@ $(document).ready(function(){
     }, 100)
 
     $("#{{name}}_remove").click(function () {
-        popup = window.open("/large_data_admin/m2m/remove/{{model_str}}/?q="+$("#{{name}}").val(),'1372088442006','width=700,height=500,toolbar=0,menubar=0,location=0,status=1,scrollbars=1,resizable=1,left=0,top=0');
+        popup = window.open("/large_data_admin/m2m/remove/{{model_str}}/?q="+$("#{{name}}").val(),'{{name}}_lda_m2m','width=700,height=500,toolbar=0,menubar=0,location=0,status=1,scrollbars=1,resizable=1,left=0,top=0');
         popup.selected = str2list($("#{{name}}").val());
         popupLoader = setInterval(function(){
             $("#{{name}}").val(list2str(popup.selected));
@@ -33,7 +33,7 @@ $(document).ready(function(){
     });
 
     $("#{{name}}_list").click(function () {
-        popup = window.open("/large_data_admin/m2m/list/{{model_str}}/?q="+$("#{{name}}").val(),'1372088442006','width=700,height=500,toolbar=0,menubar=0,location=0,status=1,scrollbars=1,resizable=1,left=0,top=0');
+        popup = window.open("/large_data_admin/m2m/list/{{model_str}}/?q="+$("#{{name}}").val(),'{{name}}_lda_m2m','width=700,height=500,toolbar=0,menubar=0,location=0,status=1,scrollbars=1,resizable=1,left=0,top=0');
     });
 
 });
