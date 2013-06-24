@@ -23,14 +23,10 @@ $(document).ready(function(){
         $("#{{name}}_selected").val(str2list($("#{{name}}").val()).length);
     }, 100)
 
-    path = window.location.pathname.split("/");
-    app = path[2],
-    model = path[3];
-    id = path[4];
-    if (id == "add")
-        $("#{{name}}_remove").remove();
-    else
-        $("#{{name}}_remove").attr("href", "/large_data_admin/m2m/remove/"+app+"/"+model+"/{{name}}/"+id+"/");
+    $("#{{name}}_remove").click(function () {
+        popup = window.open("/large_data_admin/m2m/remove/{{model_str}}/?q="+$("#{{name}}").val(),'1372088442006','width=700,height=500,toolbar=0,menubar=0,location=0,status=1,scrollbars=1,resizable=1,left=0,top=0');
+    });
+
 });
 </script>
 
@@ -52,6 +48,6 @@ $(document).ready(function(){
     </div>
     <div class="m2mlw-block">
         <input id="{{name}}_selected" type="text" class="m2mlw-selected" disabled>
-        <a target="blank" id="{{name}}_remove">remove</a>
+        <a href="#" id="{{name}}_remove">remove</a>
     </div>
 </div>
