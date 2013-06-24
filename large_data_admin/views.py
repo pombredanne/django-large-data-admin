@@ -1,7 +1,8 @@
+from django.db.models.loading import get_model as django_get_model
 from django.http import HttpResponse
 from django.utils import simplejson
 from django.template.defaultfilters import slugify
-from django.shortcuts import render_to_response
+from django.shortcuts import render_to_response, render
 from django.conf import settings
 
 from helpers import get_model
@@ -97,3 +98,13 @@ def filter_json(request, model_str, field):
             data.append((obj.pk, obj.__unicode__(), obj_attr))
 
     return HttpResponse(simplejson.dumps(data))
+
+
+def m2m_remove_view(request, app, model, field, pk):
+    Model = django_get_model(app, model)
+    obj = Model.objects.get(pk=pk)
+    objs = getattr(obj, field).all()
+
+    return render(request, "large_data_admin/m2m/remove.html", {
+        "objs": objs,
+    })

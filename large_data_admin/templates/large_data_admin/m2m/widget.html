@@ -23,6 +23,14 @@ $(document).ready(function(){
         $("#{{name}}_selected").val(str2list($("#{{name}}").val()).length);
     }, 100)
 
+    path = window.location.pathname.split("/");
+    app = path[2],
+    model = path[3];
+    id = path[4];
+    if (id == "add")
+        $("#{{name}}_remove").remove();
+    else
+        $("#{{name}}_remove").attr("href", "/large_data_admin/m2m/remove/"+app+"/"+model+"/{{name}}/"+id+"/");
 });
 </script>
 
@@ -44,5 +52,6 @@ $(document).ready(function(){
     </div>
     <div class="m2mlw-block">
         <input id="{{name}}_selected" type="text" class="m2mlw-selected" disabled>
+        <a target="blank" id="{{name}}_remove">remove</a>
     </div>
 </div>
