@@ -100,7 +100,10 @@ def filter_json(request, model_str, field):
 
 
 def m2m_list_view(request, model_str):
-    pks = [int(pk) for pk in request.GET.get("q", "").split(",")]
+    try:
+        pks = [int(pk) for pk in request.GET.get("q", "").split(",")]
+    except ValueError:
+        pks = ()
     Model = get_model(model_str)
     objs = Model.objects.filter(pk__in=pks)
 
