@@ -1,7 +1,7 @@
 {% load i18n %}
 <script type="text/javascript" src="{{spec.STATIC_URL}}large_data_admin/jquery-1.9.1.min.js"></script>
 <script type="text/javascript">
-function select_input(id, selected_id, field, url, min_length, callback){
+function select_input2(id, selected_id, field, url, min_length, callback){
     $("#"+id).keyup(function() {
         if ($("#"+id).val().length > min_length - 1){
             $.get(url+"?q="+$("#"+id).val()+"&s="+$("#"+selected_id).val(), function (d){
@@ -22,7 +22,7 @@ function select_input(id, selected_id, field, url, min_length, callback){
 
 $(document).ready(function(){
 
-    select_input("{{spec.random}}_add", "", "{{spec.field}}", "/large_data_admin/filter-attribute/{{spec.model}}/{{spec.field}}/", 2, function (i){
+    select_input2("{{spec.random}}_add", "", "{{spec.field}}", "/large_data_admin/filter-attribute/{{spec.model}}/{{spec.field}}/", 2, function (i){
     });
 })
 </script>
