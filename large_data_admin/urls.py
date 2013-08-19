@@ -10,4 +10,5 @@ urlpatterns = patterns('large_data_admin.views',
     url(r'^fk/add/(?P<model_str>[\w\._]+)/$', 'fk_add_json'),
 
     url(r'filter/(?P<model_str>[\w\._]+)/(?P<field>[\w_]+)', "filter_json"),
+    url(r'filter-attribute/(?P<model_str>[\w\._]+)/(?P<field>[\w_]+)', "filter_attribute_json"),
 )

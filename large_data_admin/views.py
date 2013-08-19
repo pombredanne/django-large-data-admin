@@ -4,7 +4,7 @@ from django.template.defaultfilters import slugify
 from django.shortcuts import render_to_response, render
 from django.conf import settings
 
-from helpers import get_model
+from helpers import get_model, getattr2
 
 def add_json(request, model_str):
     data = []
@@ -77,6 +77,7 @@ def fk_add_json(request, model_str):
 
 def filter_json(request, model_str, field):
     data = []
+    field = field.replace("__", ".")
 
     q = request.GET.get("q", "")
     exclude = []
@@ -90,7 +91,7 @@ def filter_json(request, model_str, field):
 
     for obj in Model.objects.exclude(pk__in=exclude):
         try:
-            obj_attr = getattr(obj, field)
+            obj_attr = getattr2(obj, field)
         except AttributeError:
             obj_attr = obj.__unicode__()
         if slugify(q) in slugify(obj_attr) and not obj.pk in exclude:
@@ -98,6 +99,30 @@ def filter_json(request, model_str, field):
 
     return HttpResponse(simplejson.dumps(data))
 
+
+def filter_attribute_json(request, model_str, field):
+    data = []
+    field = field.replace("__", ".")
+
+    q = request.GET.get("q", "")
+    exclude = []
+    for e in request.GET.get("s", "").split(","):
+        try:
+            exclude.append(int(e))
+        except ValueError:
+            pass
+
+    Model = get_model(model_str)
+
+    for obj in Model.objects.exclude(pk__in=exclude):
+        try:
+            obj_attr = getattr2(obj, field)
+        except AttributeError:
+            continue
+        if slugify(q) in slugify(obj_attr) and obj_attr not in data:
+            data.append(obj_attr)
+
+    return HttpResponse(simplejson.dumps(data))
 
 def m2m_list_view(request, model_str):
     try:

@@ -10,4 +10,6 @@ def get_model(model_str):
 def getattr2(obj, attr):
     for attr_part in attr.split("."):
         obj = getattr(obj, attr_part)
+        if not obj:
+            raise AttributeError
     return obj
