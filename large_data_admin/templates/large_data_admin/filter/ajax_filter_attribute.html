@@ -29,5 +29,6 @@ $(document).ready(function(){
 
 <h3>{% blocktrans with filter_title=title %} By {{ filter_title }} {% endblocktrans %}</h3>
 <input type="text" id="{{spec.random}}_add">
+<a onclick="$('#{{spec.random}}_add_list').html('');$('#{{spec.random}}_add').val('')">x</a>
 <ul id="{{spec.random}}_add_list">
 </ul>
