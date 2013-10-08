@@ -80,24 +80,18 @@ def filter_json(request, model_str, field):
     field = field.replace("__", ".")
 
     q = request.GET.get("q", "")
-    exclude = []
-    for e in request.GET.get("s", "").split(","):
-        try:
-            exclude.append(int(e))
-        except ValueError:
-            pass
-
     Model = get_model(model_str)
 
-    for obj in Model.objects.exclude(pk__in=exclude):
-        try:
-            obj_attr = getattr2(obj, field)
-        except AttributeError:
-            obj_attr = obj.__unicode__()
-        if slugify(q) in slugify(obj_attr) and not obj.pk in exclude:
-            data.append((obj.pk, obj.__unicode__(), obj_attr))
+    f = {"%s__icontains"%field:q}
+    data = list(Model.objects.filter(**f).values_list("pk", field, field))
+    data_keys = []
+    data2 = []
+    for i in range(len(data)):
+        if data[i][1] not in data_keys:
+            data2.append(data[i])
+        data_keys.append(data[i][1])
 
-    return HttpResponse(simplejson.dumps(data))
+    return HttpResponse(simplejson.dumps(data2))
 
 
 def filter_attribute_json(request, model_str, field):
@@ -106,23 +100,19 @@ def filter_attribute_json(request, model_str, field):
 
     q = request.GET.get("q", "")
     exclude = []
-    for e in request.GET.get("s", "").split(","):
-        try:
-            exclude.append(int(e))
-        except ValueError:
-            pass
 
     Model = get_model(model_str)
 
-    for obj in Model.objects.exclude(pk__in=exclude):
-        try:
-            obj_attr = getattr2(obj, field)
-        except AttributeError:
-            continue
-        if slugify(q) in slugify(obj_attr) and obj_attr not in data:
-            data.append(obj_attr)
+    f = {"%s__icontains"%field:q}
+    data = list(Model.objects.filter(**f).values_list("pk", field, field))
+    data_keys = []
+    data2 = []
+    for i in range(len(data)):
+        if data[i][1] not in data_keys:
+            data2.append(data[i])
+        data_keys.append(data[i][1])
 
-    return HttpResponse(simplejson.dumps(data))
+    return HttpResponse(simplejson.dumps(data2))
 
 def m2m_list_view(request, model_str):
     try:
