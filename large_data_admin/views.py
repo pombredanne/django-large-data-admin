@@ -94,26 +94,6 @@ def filter_json(request, model_str, field):
     return HttpResponse(simplejson.dumps(data2))
 
 
-def filter_attribute_json(request, model_str, field):
-    data = []
-    field = field.replace("__", ".")
-
-    q = request.GET.get("q", "")
-    exclude = []
-
-    Model = get_model(model_str)
-
-    f = {"%s__icontains"%field:q}
-    data = list(Model.objects.filter(**f).values_list("pk", field, field))
-    data_keys = []
-    data2 = []
-    for i in range(len(data)):
-        if data[i][1] not in data_keys:
-            data2.append(data[i])
-        data_keys.append(data[i][1])
-
-    return HttpResponse(simplejson.dumps(data2))
-
 def m2m_list_view(request, model_str):
     try:
         pks = [int(pk) for pk in request.GET.get("q", "").split(",")]
