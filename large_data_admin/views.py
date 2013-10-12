@@ -95,10 +95,7 @@ def filter_json(request, model_str, field):
 
 
 def m2m_list_view(request, model_str):
-    try:
-        pks = [int(pk) for pk in request.GET.get("q", "").split(",")]
-    except ValueError:
-        pks = ()
+    pks = [int(pk) for pk in filter(None, request.GET.get("q", "").split(","))]
     Model = get_model(model_str)
     objs = Model.objects.filter(pk__in=pks)
 
@@ -107,7 +104,7 @@ def m2m_list_view(request, model_str):
     })
 
 def m2m_remove_view(request, model_str):
-    pks = [int(pk) for pk in request.GET.get("q", "").split(",")]
+    pks = [int(pk) for pk in filter(None, request.GET.get("q", "").split(","))]
     Model = get_model(model_str)
     objs = Model.objects.filter(pk__in=pks)
 
