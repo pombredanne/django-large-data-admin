@@ -82,8 +82,9 @@ def filter_json(request, model_str, field):
     q = request.GET.get("q", "")
     Model = get_model(model_str)
 
-    f = {"%s__icontains"%field:q}
-    data = list(Model.objects.filter(**f).values_list("pk", field, field))
+    field2 = field.split(".")[-1]
+    f = {"%s__icontains"%field2:q}
+    data = list(Model.objects.filter(**f).values_list("pk", field2, field2))
     data_keys = []
     data2 = []
     for i in range(len(data)):
