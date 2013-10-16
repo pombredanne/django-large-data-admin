@@ -30,7 +30,7 @@ function select_input(id, selected_id, url, min_length, callback){
                 d = JSON.parse(d);
                 $("#"+id+"_list").empty();
                 d.forEach(function (i) {
-                    $("#"+id+"_list").append("<li><a href=\"#\" id=\""+id+i[0]+"\">"+i[1]+"</a></li>");
+                    $("#"+id+"_list").append("<li><a id=\""+id+i[0]+"\">"+i[1]+"</a></li>");
                     $("#"+id+i[0]).click(function(){
                         $("#"+id+"_list").empty();
                         $("#"+id).val("");
