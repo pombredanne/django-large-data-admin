@@ -5,7 +5,7 @@ from setuptools import setup, find_packages
 
 setup(
     name = "django-large-data-admin",
-    version = "1.9.5",
+    version = "1.9.6",
     url = 'https://github.com/sikaondrej/django-large-data-admin/',
     license = 'MIT',
     description = "",
