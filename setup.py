@@ -7,7 +7,7 @@ setup(
     name = "django-large-data-admin",
     version = "1.9.5",
     url = 'https://github.com/sikaondrej/django-large-data-admin/',
-    license = 'GNU LGPL v.3',
+    license = 'MIT',
     description = "",
     author = 'Ondrej Sika',
     author_email = 'ondrej@ondrejsika.com',
