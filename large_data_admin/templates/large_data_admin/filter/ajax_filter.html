@@ -1,14 +1,16 @@
 {% load i18n %}
 <script type="text/javascript" src="{{spec.STATIC_URL}}large_data_admin/jquery-1.9.1.min.js"></script>
 <script type="text/javascript">
-function select_input(id, selected_id, field, url, min_length, callback){
+function select_input(id, url, model, field, min_length, callback){
     $("#"+id).keyup(function() {
         if ($("#"+id).val().length > min_length - 1){
-            $.get(url+"?q="+$("#"+id).val()+"&s="+$("#"+selected_id).val(), function (d){
-                d = JSON.parse(d);
+            uri = url+"?query="+$("#"+id).val()+"&model="+model+"&field="+field;
+            console.log(uri)
+            $.get(uri, function (data){
+                data = JSON.parse(data);
                 $("#"+id+"_list").empty();
-                d.forEach(function (i) {
-                    $("#"+id+"_list").append("<li><a href=\"?"+field+"="+i[2].replace("&", "%26").replace("%27", "'").replace("%22", '"')+"\" >"+i[1]+"</a></li>");
+                data.forEach(function (i) {
+                    $("#"+id+"_list").append("<li><a href=\"?"+field+"="+i[1].replace("&", "%26").replace("%27", "'").replace("%22", '"')+"\" >"+i[1]+"</a></li>");
                     $("#"+id+i[0]).click(function(){
                         $("#"+id+"_list").empty();
                         $("#"+id).val("");
@@ -22,7 +24,7 @@ function select_input(id, selected_id, field, url, min_length, callback){
 
 $(document).ready(function(){
 
-    select_input("{{spec.random}}_add", "", "{{spec.field}}", "/large_data_admin/filter/{{spec.model}}/{{spec.field}}/", 2, function (i){
+    select_input("{{spec.random}}_add", "/large_data_admin/filter/", "{{spec.model}}", "{{spec.field}}", 2, function (i){
     });
 })
 </script>

@@ -1,3 +1,5 @@
+import urllib
+
 from django.http import HttpResponse
 from django.utils import simplejson
 from django.template.defaultfilters import slugify
@@ -75,24 +77,17 @@ def fk_add_json(request, model_str):
 
     return HttpResponse(simplejson.dumps(data))
 
-def filter_json(request, model_str, field):
-    data = []
-    field = field.replace("__", ".")
+def filter_json(request):
+    model_str = request.GET.get("model")
+    field = request.GET.get("field")#.split(".")[-1]
+    query = urllib.unquote(request.GET.get("query", ""))
 
-    q = request.GET.get("q", "")
     Model = get_model(model_str)
 
-    field2 = field.split(".")[-1]
-    f = {"%s__icontains"%field2:q}
-    data = list(Model.objects.filter(**f).values_list("pk", field2, field2))
-    data_keys = []
-    data2 = []
-    for i in range(len(data)):
-        if data[i][1] not in data_keys:
-            data2.append(data[i])
-        data_keys.append(data[i][1])
+    kwargs = {"%s__icontains"%field: query}
+    data = Model.objects.filter(**kwargs).distinct(field).values_list("pk", field)
 
-    return HttpResponse(simplejson.dumps(data2))
+    return HttpResponse(simplejson.dumps(list(data)))
 
 
 def m2m_list_view(request, model_str):
