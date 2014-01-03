@@ -9,7 +9,7 @@ function select_input(id, url, model, field, min_length, callback){
                 d = JSON.parse(d);
                 $("#"+id+"_list").empty();
                 d.forEach(function (i) {
-                    $("#"+id+"_list").append("<li><a id=\""+id+i[0]+"\">"+i[1]+"</a></li>");
+                    $("#"+id+"_list").append("<li><a id=\""+id+i[0]+"\">"+i[1]+" #"+i[0]+"</a></li>");
                     $("#"+id+i[0]).click(function(){
                         $("#"+id+"_list").empty();
                         $("#"+id).val("");
@@ -26,7 +26,7 @@ $(document).ready(function(){
 
     select_input("{{name}}_add", "/large_data_admin/get/", "{{model_str}}", "{{field}}", 2, function (i){
         $("#{{name}}").val(i[0]);
-        $("#{{name}}_value").val(i[1]);
+        $("#{{name}}_value").val(i[1]+" #"+i[0]);
     });
 
     $("#{{name}}_remove").click(function () {

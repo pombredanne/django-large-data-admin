@@ -10,7 +10,7 @@ function select_input2(id, selected_id, url, model, field, min_length, callback)
                 d = JSON.parse(d);
                 $("#"+id+"_list").empty();
                 d.forEach(function (i) {
-                    $("#"+id+"_list").append("<li><a id=\""+id+i[0]+"\">"+i[1]+"</a></li>");
+                    $("#"+id+"_list").append("<li><a id=\""+id+i[0]+"\">"+i[1]+" #"+i[0]+"</a></li>");
                     $("#"+id+i[0]).click(function(){
                         $("#"+id+"_list").empty();
                         $("#"+id).val("");
@@ -28,7 +28,7 @@ function select_input3(id, selected_id, url, model, field, min_length, callback)
                 d = JSON.parse(d);
                 $("#"+id+"_list").empty();
                 d.forEach(function (i) {
-                    $("#"+id+"_list").append("<li><a id=\""+id+i[0]+"\">"+i[1]+"</a></li>");
+                    $("#"+id+"_list").append("<li><a id=\""+id+i[0]+"\">"+i[1]+" #"+i[0]+"</a></li>");
                     $("#"+id+i[0]).click(function(){
                         $("#"+id+"_list").empty();
                         $("#"+id).val("");

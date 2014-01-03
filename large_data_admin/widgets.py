@@ -38,7 +38,8 @@ class SelectWidget(Widget):
 
     def render(self, name, value, attrs=None):
         if value and value != "None":
-            text_value = get_model(self.model_str).objects.get(pk=value).__unicode__()
+            obj = get_model(self.model_str).objects.get(pk=value)
+            text_value = "%s #%s" % (getattr(obj, self.search_field), obj.pk)
         else:
             text_value = ""
             value = ""
