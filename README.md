@@ -30,7 +30,7 @@ and to root urls in `urls.py`
 
 #### Fields
 * db_fields.ManyToManyField(RelatedModel)
-* db_fields.ForeignKey(RelatedModel)
+* db_fields.ForeignKey(RelatedModel, search_fied)
 
 #### Filters
 * filters.get_ajax_filter(filter_title, model, field)
@@ -51,7 +51,7 @@ and to root urls in `urls.py`
 
     class MyRelatedModel(models.Model):
         name = models.CharField(max_length=255)
-        base_model = lda.ForeignKey(MyType)
+        base_model = lda.ForeignKey(MyType, "name")
 
 #### In admin.py
 
