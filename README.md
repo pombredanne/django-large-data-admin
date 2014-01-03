@@ -35,7 +35,6 @@ and to root urls
 #### Filters
 * filters.get_ajax_filter(filter_title, model, field)
 
-### Example of usage
+### Examples
 
-Look at <http://github.com/ondrejsika/lda-example> or 
- [models.py](https://github.com/ondrejsika/lda-example/blob/master/lda_example/models.py) for fields, [admin.py](https://github.com/ondrejsika/lda-example/blob/master/lda_example/admin.py) for filters.
+Example project is in [example_project](example_project) directory, [models.py](example_project/lda_example/models.py) for fields, [admin.py](example_project/lda_example/admin.py) for filters.
