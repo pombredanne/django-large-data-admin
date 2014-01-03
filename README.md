@@ -18,11 +18,11 @@ Instalation is very simple over pip.
 
     # pip install django-large-data-admin
 
-add to `INSTALLED_APPS` in `settings.py`
+add to `INSTALLED_APPS` in your settings.py
 
     INSTALLED_APPS += ("large_data_admin", )
 
-and to root urls in `urls.py`
+and to root urls
 
     urlpatterns += patterns('', url(r'^large_data_admin/', include('large_data_admin.urls')))
 
@@ -35,51 +35,7 @@ and to root urls in `urls.py`
 #### Filters
 * filters.get_ajax_filter(filter_title, model, field)
 
-### Usage
+### Example of usage
 
-#### In models.py
-
-``` python
-from django.db import models
-from large_data_admin import db_fields as lda
-
-class MyType(models.Model):
-    name = models.CharField(max_length=255)
-
-    def __unicode__(self):
-        return u"<MyType: %s>" % self.name
-
-class MyModel(models.Model):
-    name = models.CharField(max_length=255)
-    my_type = lda.ManyToManyField(MyType, "name")
-
-    def __unicode__(self):
-        return u"<MyModel: %s>" % self.name
-
-class MyRelatedModel(models.Model):
-    name = models.CharField(max_length=255)
-    base_model = lda.ForeignKey(MyModel, "name")
-
-    def __unicode__(self):
-        return u"<MyRelatedModel: %s>" % self.name
-```
-
-#### In admin.py
-
-``` python
-from django.contrib import admin
-from large_data_admin.filters import get_ajax_filter
-from models import MyType, MyModel, MyRelatedModel
-
-class MyModelAdmin(admin.ModelAdmin):
-    list_filter = (
-        get_ajax_filter("type", MyModel, "my_type__name"),
-    )
-    def lookup_allowed(self, key, val):
-        return True
-
-
-admin.site.register(MyModel, MyModelAdmin)
-admin.site.register(MyType)
-admin.site.register(MyRelatedModel)
-```
+Look at <http://github.com/ondrejsika/lda-example> or 
+ [models.py](https://github.com/ondrejsika/lda-example/blob/master/lda_example/models.py) for fields, [admin.py](https://github.com/ondrejsika/lda-example/blob/master/lda_example/admin.py) for filters.
