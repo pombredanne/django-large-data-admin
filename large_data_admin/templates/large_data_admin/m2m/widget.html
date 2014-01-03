@@ -42,13 +42,13 @@ function select_input3(id, selected_id, url, model, field, min_length, callback)
 
 $(document).ready(function(){
 
-    select_input2("{{name}}_add", "{{name}}", "/large_data_admin/get/", "{{model_str}}", "username", 2, function (i){
+    select_input2("{{name}}_add", "{{name}}", "/large_data_admin/get/", "{{model_str}}", "{{field}}", 2, function (i){
         selected = str2intList($("#{{name}}").val())
         selected.push(i[0])
         $("#{{name}}").val(selected.toString());
     });
 
-    select_input3("{{name}}_rm", "{{name}}", "/large_data_admin/get/", "{{model_str}}", "username", 2, function (i){
+    select_input3("{{name}}_rm", "{{name}}", "/large_data_admin/get/", "{{model_str}}", "{{field}}", 2, function (i){
         selected = str2intList($("#{{name}}").val())
         index = selected.indexOf(i[0]);
         selected.remove(index);

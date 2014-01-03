@@ -14,6 +14,7 @@ def get_json(request):
     query = urllib.unquote(request.GET.get("query", ""))
     exclude = filter(None, request.GET.get("exclude", "").split(","))
     fromlist = filter(None, request.GET.get("fromlist", "").split(","))
+    unique = request.GET.get("unique")
 
     Model = get_model(model_str)
 
@@ -21,9 +22,23 @@ def get_json(request):
     exclude_query = {"pk__in": exclude}
     if fromlist:
         filter_query.update({"pk__in": fromlist })
-    data = Model.objects.filter(**filter_query).exclude(**exclude_query).distinct(field).values_list("pk", field)
 
-    return HttpResponse(simplejson.dumps(list(data)))
+
+    qs = Model.objects.filter(**filter_query).exclude(**exclude_query)
+
+    if unique:
+        try:
+            qs = qs.distinct(field)
+        except NotImplementedError:
+            data = []
+            unique_by_field = []
+            for pk, field_value in list(qs.values_list("pk", field)):
+                if field_value not in unique_by_field:
+                    data.append((pk, field_value))
+                unique_by_field.append(field_value)
+            return HttpResponse(simplejson.dumps(data))
+
+    return HttpResponse(simplejson.dumps(list(qs.values_list("pk", field))))
 
 def m2m_list_view(request, model_str):
     pks = [int(pk) for pk in filter(None, request.GET.get("q", "").split(","))]
