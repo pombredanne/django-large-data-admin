@@ -39,33 +39,47 @@ and to root urls in `urls.py`
 
 #### In models.py
 
-    from django.db import models
-    from large_data_admin import db_fields as lda
+``` python
+from django.db import models
+from large_data_admin import db_fields as lda
 
-    class MyType(models.Model):
-        name = models.CharField(max_length=255)
+class MyType(models.Model):
+    name = models.CharField(max_length=255)
 
-    class MyModel(models.Model):
-        name = models.CharField(max_length=255)
-        my_type = lda.ManyToManyField(MyType, "name")
+    def __unicode__(self):
+        return u"<MyType: %s>" % self.name
 
-    class MyRelatedModel(models.Model):
-        name = models.CharField(max_length=255)
-        base_model = lda.ForeignKey(MyType, "name")
+class MyModel(models.Model):
+    name = models.CharField(max_length=255)
+    my_type = lda.ManyToManyField(MyType, "name")
+
+    def __unicode__(self):
+        return u"<MyModel: %s>" % self.name
+
+class MyRelatedModel(models.Model):
+    name = models.CharField(max_length=255)
+    base_model = lda.ForeignKey(MyModel, "name")
+
+    def __unicode__(self):
+        return u"<MyRelatedModel: %s>" % self.name
+```
 
 #### In admin.py
 
-    from django.contrib import admin
-    from large_data_admin.filters import get_ajax_filter
-    from models import MyType, MyModel, MyRelatedModel
+``` python
+from django.contrib import admin
+from large_data_admin.filters import get_ajax_filter
+from models import MyType, MyModel, MyRelatedModel
 
-    class MyModelAdmin(admin.ModelAdmin):
-        list_filters = (
-            get_ajax_filter("type", MyType, "my_type"),
-        )
-        def lookup_allowed(self, key, val):
-            return True
+class MyModelAdmin(admin.ModelAdmin):
+    list_filter = (
+        get_ajax_filter("type", MyModel, "my_type__name"),
+    )
+    def lookup_allowed(self, key, val):
+        return True
 
-    admin.site.register(MyModel, MyModelAdmin)
-    admin.site.register(MyType)
-    admin.site.register(MyRelatedModel)
+
+admin.site.register(MyModel, MyModelAdmin)
+admin.site.register(MyType)
+admin.site.register(MyRelatedModel)
+```
