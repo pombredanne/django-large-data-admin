@@ -47,7 +47,7 @@ and to root urls in `urls.py`
 
     class MyModel(models.Model):
         name = models.CharField(max_length=255)
-        my_type = lda.ManyToManyField(MyType)
+        my_type = lda.ManyToManyField(MyType, "name")
 
     class MyRelatedModel(models.Model):
         name = models.CharField(max_length=255)
