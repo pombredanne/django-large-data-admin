@@ -8,6 +8,4 @@ urlpatterns = patterns('large_data_admin.views',
     url(r'^m2m/list/(?P<model_str>[\w_\.]+)/', "m2m_list_view"),
 
     url(r'^get/$', 'get_json'),
-
-    url(r'filter/', "filter_json"),
 )

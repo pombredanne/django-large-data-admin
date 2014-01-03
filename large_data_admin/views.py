@@ -79,19 +79,6 @@ def get_json(request):
 
     return HttpResponse(simplejson.dumps(list(data)))
 
-def filter_json(request):
-    model_str = request.GET.get("model")
-    field = request.GET.get("field")#.split(".")[-1]
-    query = urllib.unquote(request.GET.get("query", ""))
-
-    Model = get_model(model_str)
-
-    kwargs = {"%s__icontains"%field: query}
-    data = Model.objects.filter(**kwargs).distinct(field).values_list("pk", field)
-
-    return HttpResponse(simplejson.dumps(list(data)))
-
-
 def m2m_list_view(request, model_str):
     pks = [int(pk) for pk in filter(None, request.GET.get("q", "").split(","))]
     Model = get_model(model_str)
