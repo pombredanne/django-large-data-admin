@@ -4,7 +4,7 @@
 function select_input(id, url, model, field, min_length, callback){
     $("#"+id).keyup(function() {
         if ($("#"+id).val().length > min_length - 1){
-            uri = url+"?query="+$("#"+id).val()+"&model="+model+"&field="+field;
+            uri = url+"?query="+$("#"+id).val()+"&model="+model+"&field="+field+"&unique=true";
             console.log(uri)
             $.get(uri, function (data){
                 data = JSON.parse(data);
