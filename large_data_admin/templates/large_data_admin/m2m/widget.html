@@ -2,22 +2,58 @@
 <script type="text/javascript" src="{{STATIC_URL}}large_data_admin/m2m/widget.js"></script>
 <link rel="stylesheet" type="text/css" href="{{STATIC_URL}}large_data_admin/m2m/widget.css">
 <script type="text/javascript">
+
+function select_input2(id, selected_id, url, model, field, min_length, callback){
+    $("#"+id).keyup(function() {
+        if ($("#"+id).val().length > min_length - 1){
+            $.get(url+"?query="+$("#"+id).val()+"&model="+model+"&field="+field+"&exclude="+$("#"+selected_id).val(), function (d){
+                d = JSON.parse(d);
+                $("#"+id+"_list").empty();
+                d.forEach(function (i) {
+                    $("#"+id+"_list").append("<li><a id=\""+id+i[0]+"\">"+i[1]+"</a></li>");
+                    $("#"+id+i[0]).click(function(){
+                        $("#"+id+"_list").empty();
+                        $("#"+id).val("");
+                        callback(i);
+                    })
+                })
+            })
+        }
+    })
+}
+function select_input3(id, selected_id, url, model, field, min_length, callback){
+    $("#"+id).keyup(function() {
+        if ($("#"+id).val().length > min_length - 1){
+            $.get(url+"?query="+$("#"+id).val()+"&model="+model+"&field="+field+"&fromlist="+$("#"+selected_id).val(), function (d){
+                d = JSON.parse(d);
+                $("#"+id+"_list").empty();
+                d.forEach(function (i) {
+                    $("#"+id+"_list").append("<li><a id=\""+id+i[0]+"\">"+i[1]+"</a></li>");
+                    $("#"+id+i[0]).click(function(){
+                        $("#"+id+"_list").empty();
+                        $("#"+id).val("");
+                        callback(i);
+                    })
+                })
+            })
+        }
+    })
+}
+
 $(document).ready(function(){
 
-    select_input("{{name}}_add", "{{name}}", "/large_data_admin/m2m/add/{{model_str}}/", 2, function (i){
+    select_input2("{{name}}_add", "{{name}}", "/large_data_admin/get/", "{{model_str}}", "username", 2, function (i){
         selected = str2intList($("#{{name}}").val())
         selected.push(i[0])
         $("#{{name}}").val(selected.toString());
     });
 
-    select_input("{{name}}_rm", "{{name}}", "/large_data_admin/m2m/rm/{{model_str}}/", 2, function (i){
+    select_input3("{{name}}_rm", "{{name}}", "/large_data_admin/get/", "{{model_str}}", "username", 2, function (i){
         selected = str2intList($("#{{name}}").val())
         index = selected.indexOf(i[0]);
         selected.remove(index);
         $("#{{name}}").val(selected.toString());
     });
-
-    check_input("{{name}}_check", "{{name}}", "/large_data_admin/m2m/check/{{model_str}}/", 2);
 
     setInterval(function () {
         $("#{{name}}_selected").val(str2list($("#{{name}}").val()).length);
@@ -49,11 +85,6 @@ $(document).ready(function(){
     <div class="m2mlw-block">
         <input id="{{name}}_rm" type="text" placeholder="remove">
         <ul id="{{name}}_rm_list"></ul>
-    </div>
-    <div class="m2mlw-block">
-        <input id="{{name}}_check" type="text" placeholder="check">
-        <div id="{{name}}_check_out" class="m2mlw-status">&nbsp;</div>
-        <ul id="{{name}}_check_list"></ul>
     </div>
     <div class="m2mlw-block">
         <input id="{{name}}_selected" type="text" class="m2mlw-selected" disabled>

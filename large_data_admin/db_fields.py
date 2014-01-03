@@ -3,14 +3,16 @@ from django.db import models
 import form_fields
 
 class ManyToManyField(models.ManyToManyField):
-    def __init__(self, to, **kwargs):
+    def __init__(self, to, search_field, **kwargs):
         self.model_str = u"%s.%s"%(to.__module__, to.__name__)
+        self.search_field = search_field
         super(ManyToManyField, self).__init__(to, **kwargs)
 
     def formfield(self, **kwargs):
         defaults = {
             'form_class': form_fields.ModelMultipleChoiceField,
             "model_str": self.model_str,
+            "search_field": self.search_field,
         }
         defaults.update(kwargs)
         return super(ManyToManyField, self).formfield(**defaults)

@@ -6,10 +6,3 @@ def get_model(model_str):
     module_name = ".".join(model[:-1])
     module = importlib.import_module(module_name)
     return getattr(module, class_name)
-
-def getattr2(obj, attr):
-    for attr_part in attr.split("."):
-        obj = getattr(obj, attr_part)
-        if not obj:
-            raise AttributeError
-    return obj
