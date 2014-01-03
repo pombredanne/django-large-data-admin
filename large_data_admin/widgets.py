@@ -29,7 +29,7 @@ class ManyToManyWidget(Widget):
         }))
 
 class SelectWidget(Widget):
-    def __init__(self, model_str, **kwargs):
+    def __init__(self, model_str, search_field, **kwargs):
         self.model_str = model_str
         return super(SelectWidget, self).__init__(**kwargs)
 
@@ -46,4 +46,5 @@ class SelectWidget(Widget):
             "value": value,
             "text_value": text_value,
             "model_str": self.model_str,
+            "field": search_field,
         }))

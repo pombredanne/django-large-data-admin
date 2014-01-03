@@ -65,17 +65,19 @@ def check_json(request, model_str):
 
     return HttpResponse(simplejson.dumps(data))
 
-def fk_add_json(request, model_str):
-    value = request.GET.get("q", "") 
-    data = []
+def get_json(request):
+    model_str = request.GET.get("model")
+    field = request.GET.get("field")
+    query = urllib.unquote(request.GET.get("query", ""))
+    exclude = filter(None, request.GET.get("exclude", "").split(","))
 
     Model = get_model(model_str)
-    
-    for obj in Model.objects.all():
-        if slugify(value) in slugify(obj.__unicode__()):
-            data.append((obj.pk, obj.__unicode__()))
 
-    return HttpResponse(simplejson.dumps(data))
+    filter_query = {"%s__icontains"%field: query}
+    exclude_query = {"pk__in": exclude}
+    data = Model.objects.filter(**filter_query).exclude(**exclude_query).distinct(field).values_list("pk", field)
+
+    return HttpResponse(simplejson.dumps(list(data)))
 
 def filter_json(request):
     model_str = request.GET.get("model")

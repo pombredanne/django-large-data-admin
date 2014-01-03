@@ -12,9 +12,9 @@ class ModelMultipleChoiceField(forms.ModelMultipleChoiceField):
         super(ModelMultipleChoiceField, self).__init__(**defaults)
 
 class ModelChoiceField(forms.ModelChoiceField):
-    def __init__(self, model_str, **kwargs):
+    def __init__(self, model_str, search_field, **kwargs):
         defaults = {
-            'widget': SelectWidget(model_str),
+            'widget': SelectWidget(model_str, search_field),
         }
         defaults.update(kwargs)
         super(ModelChoiceField, self).__init__(**defaults)

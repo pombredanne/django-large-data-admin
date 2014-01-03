@@ -22,7 +22,7 @@ class ManyToManyField(models.ManyToManyField):
         return (field_class, args, kwargs)
 
 class ForeignKey(models.ForeignKey):
-    def __init__(self, to, **kwargs):
+    def __init__(self, to, search_field, **kwargs):
         self.model_str = u"%s.%s"%(to.__module__, to.__name__)
         super(ForeignKey, self).__init__(to, **kwargs)
 
@@ -30,6 +30,7 @@ class ForeignKey(models.ForeignKey):
         defaults = {
             'form_class': form_fields.ModelChoiceField,
             "model_str": self.model_str,
+            "search_field": search_field,
         }
         defaults.update(kwargs)
         return super(ForeignKey, self).formfield(**defaults)
