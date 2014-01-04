@@ -1,4 +1,4 @@
-from django.conf.urls.defaults import *
+from django.conf.urls import *
 
 urlpatterns = patterns('large_data_admin.views',
     url(r'^get/$', 'get_json'),
