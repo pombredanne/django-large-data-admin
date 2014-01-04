@@ -10,6 +10,10 @@ Admin widgets for managing large data in ForeignKey and ManyToMany and toher.
 
 ## Documentation
 
+### Try Online
+
+Try on <http://lda.examples.h4y.cz/> with username __test__ and password __test__.
+
 ### Instalation
 
 Instalation is very simple over pip.
