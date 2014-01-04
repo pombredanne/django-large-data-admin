@@ -6,6 +6,10 @@ from django.contrib import admin
 
 admin.autodiscover()
 
+from django.contrib.auth.models import User, Group
+admin.site.unregister(User)
+admin.site.unregister(Group)
+
 urlpatterns = patterns('',
     url(r'^', include(admin.site.urls)),
 
