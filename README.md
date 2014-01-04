@@ -3,12 +3,10 @@ django-large-data-admin
 
 Admin widgets for managing large data in ForeignKey and ManyToMany and toher.
 
-### Authors
-*  Ondrej Sika, <http://ondrejsika.com>, ondrej@ondrejsika.com
 
-### Source
-* Python Package Index: <http://pypi.python.org/pypi/django-large-data-admin>
-* GitHub: <https://github.com/sikaondrej/django-large-data-admin>
+* __Authors__: [Ondrej Sika](http://ondrejsika.com/c.html)
+* __Python Package Index__: <http://pypi.python.org/pypi/django-large-data-admin>
+* __GitHub__: <https://github.com/sikaondrej/django-large-data-admin>
 
 ## Documentation
 
