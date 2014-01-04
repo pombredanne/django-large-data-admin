@@ -27,8 +27,8 @@ def get_json(request):
     qs = Model.objects.filter(**filter_query).exclude(**exclude_query)
 
     if unique:
-        try:
-            qs = qs.distinct(field)
+        try:  # XXX: needs prety check if DISTINCT is available, ticket #3
+            return HttpResponse(simplejson.dumps(list(qs.distinct(field).values_list("pk", field))))
         except NotImplementedError:
             data = []
             unique_by_field = []
