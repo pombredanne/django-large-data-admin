@@ -1,8 +1,8 @@
 {% load i18n %}
 <script type="text/javascript" src="{{spec.STATIC_URL}}large_data_admin/jquery-1.9.1.min.js"></script>
 <script type="text/javascript">
-function perform_request(id, url, model, field, conditions, callback){
-    uri = url+"?query="+$("#"+id).val()+"&model="+model+"&field="+field+"&conditions="+conditions+"&unique=true";
+function perform_request(id, url, model, field, filter_query, exclude_query, callback){
+    uri = url+"?query="+$("#"+id).val()+"&model="+model+"&field="+field+"&filter_query="+filter_query+"&exclude_query="+exclude_query+"&unique=true";
     console.log(uri)
     $.get(uri, function (data){
         data = JSON.parse(data);
@@ -17,23 +17,21 @@ function perform_request(id, url, model, field, conditions, callback){
     })
 }
 
-function select_input(id, url, model, field, conditions, min_length, callback){
+function select_input(id, url, model, field, filter_query, exclude_query, min_length, callback){
     $("#"+id).keyup(function() {
         if ($("#"+id).val().length > min_length - 1){
             $("#"+id+"_list").empty();
             var fields = field.split(',');
-            console.log(fields);
             fields.forEach(function(field) {
-                perform_request(id, url, model, $.trim(field), conditions, callback);
+                perform_request(id, url, model, $.trim(field), filter_query.replace('INPUT_VALUE', $("#"+id).val()), exclude_query.replace('INPUT_VALUE', $("#"+id).val()), callback);
             });
-            //perform_request(id, url, model, field, conditions, callback);
         }
     })
 }
 
 $(document).ready(function(){
 
-    select_input("{{spec.random}}_add", "/large_data_admin/get/", "{{spec.model}}", "{{spec.field}}", "{{spec.conditions}}", 2, function (i){
+    select_input("{{spec.random}}_add", "/large_data_admin/get/", "{{spec.model}}", "{{spec.field}}", "{{spec.filter_query}}", "{{spec.exclude_query}}", 2, function (i){
     });
 })
 </script>

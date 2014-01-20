@@ -12,22 +12,22 @@ def get_json(request):
     model_str = request.GET.get("model")
     field = request.GET.get("field")
     query = urllib.unquote(request.GET.get("query", ""))
-    conditions = json.loads(urllib.unquote(request.GET.get("conditions", "")))
     exclude = filter(None, request.GET.get("exclude", "").split(","))
     fromlist = filter(None, request.GET.get("fromlist", "").split(","))
     unique = request.GET.get("unique")
+    filter_query  = json.loads(urllib.unquote(request.GET.get("filter_query", {})))
+    exclude_query = json.loads(urllib.unquote(request.GET.get("exclude_query", {})))
 
     Model = get_model(model_str)
 
-    filter_query = {"%s__icontains"%field: query}
-    exclude_query = {"pk__in": exclude}
+    if (len(filter_query) + len(exclude_query)) == 0:
+        filter_query = {"%s__icontains"%field: query}
+        exclude_query = {"pk__in": exclude}
+
     if fromlist:
         filter_query.update({"pk__in": fromlist })
 
-
     qs = Model.objects.filter(**filter_query).exclude(**exclude_query)
-    if conditions != '':
-        qs = qs.filter(**conditions)
 
     if unique:
         try:  # XXX: needs prety check if DISTINCT is available, ticket #3
