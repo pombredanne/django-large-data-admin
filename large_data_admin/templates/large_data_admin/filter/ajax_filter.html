@@ -1,30 +1,39 @@
 {% load i18n %}
 <script type="text/javascript" src="{{spec.STATIC_URL}}large_data_admin/jquery-1.9.1.min.js"></script>
 <script type="text/javascript">
-function select_input(id, url, model, field, min_length, callback){
+function perform_request(id, url, model, field, conditions, callback){
+    uri = url+"?query="+$("#"+id).val()+"&model="+model+"&field="+field+"&conditions="+conditions+"&unique=true";
+    console.log(uri)
+    $.get(uri, function (data){
+        data = JSON.parse(data);
+        data.forEach(function (i) {
+            $("#"+id+"_list").append("<li><a href=\"?"+field+"="+i[1].replace("&", "%26").replace("%27", "'").replace("%22", '"')+"\" >"+i[1]+"</a></li>");
+            $("#"+id+i[0]).click(function(){
+                $("#"+id+"_list").empty();
+                $("#"+id).val("");
+                callback(i);
+            })
+        })
+    })
+}
+
+function select_input(id, url, model, field, conditions, min_length, callback){
     $("#"+id).keyup(function() {
         if ($("#"+id).val().length > min_length - 1){
-            uri = url+"?query="+$("#"+id).val()+"&model="+model+"&field="+field+"&unique=true";
-            console.log(uri)
-            $.get(uri, function (data){
-                data = JSON.parse(data);
-                $("#"+id+"_list").empty();
-                data.forEach(function (i) {
-                    $("#"+id+"_list").append("<li><a href=\"?"+field+"="+i[1].replace("&", "%26").replace("%27", "'").replace("%22", '"')+"\" >"+i[1]+"</a></li>");
-                    $("#"+id+i[0]).click(function(){
-                        $("#"+id+"_list").empty();
-                        $("#"+id).val("");
-                        callback(i);
-                    })
-                })
-            })
+            $("#"+id+"_list").empty();
+            var fields = field.split(',');
+            console.log(fields);
+            fields.forEach(function(field) {
+                perform_request(id, url, model, $.trim(field), conditions, callback);
+            });
+            //perform_request(id, url, model, field, conditions, callback);
         }
     })
 }
 
 $(document).ready(function(){
 
-    select_input("{{spec.random}}_add", "/large_data_admin/get/", "{{spec.model}}", "{{spec.field}}", 2, function (i){
+    select_input("{{spec.random}}_add", "/large_data_admin/get/", "{{spec.model}}", "{{spec.field}}", "{{spec.conditions}}", 2, function (i){
     });
 })
 </script>

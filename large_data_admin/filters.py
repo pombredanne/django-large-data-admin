@@ -1,10 +1,11 @@
 import random
+import json, urllib
 
 from django.conf import settings
 from django.contrib import admin
 from django.utils.translation import ugettext_lazy as _
 
-def get_ajax_filter(filter_title, model, field):
+def get_ajax_filter(filter_title, model, field, conditions={}):
     class AjaxFilter(admin.SimpleListFilter):
         parameter_name = 'decade'
         title = _(filter_title)
@@ -14,6 +15,7 @@ def get_ajax_filter(filter_title, model, field):
             self.STATIC_URL = settings.STATIC_URL
             self.model = "%s.%s" % (model.__module__, model.__name__)
             self.field = field
+            self.conditions = urllib.quote(json.dumps(conditions))
             super(AjaxFilter, self).__init__(*args, **kwargs)
         def has_output(self):
             return True

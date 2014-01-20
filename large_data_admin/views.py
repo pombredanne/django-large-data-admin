@@ -1,4 +1,4 @@
-import urllib
+import urllib, json
 
 from django.http import HttpResponse
 from django.utils import simplejson
@@ -12,6 +12,7 @@ def get_json(request):
     model_str = request.GET.get("model")
     field = request.GET.get("field")
     query = urllib.unquote(request.GET.get("query", ""))
+    conditions = json.loads(urllib.unquote(request.GET.get("conditions", "")))
     exclude = filter(None, request.GET.get("exclude", "").split(","))
     fromlist = filter(None, request.GET.get("fromlist", "").split(","))
     unique = request.GET.get("unique")
@@ -25,6 +26,8 @@ def get_json(request):
 
 
     qs = Model.objects.filter(**filter_query).exclude(**exclude_query)
+    if conditions != '':
+        qs = qs.filter(**conditions)
 
     if unique:
         try:  # XXX: needs prety check if DISTINCT is available, ticket #3
