@@ -1,4 +1,4 @@
-import urllib
+import urllib, json
 
 from django.http import HttpResponse
 from django.utils import simplejson
@@ -15,14 +15,23 @@ def get_json(request):
     exclude = filter(None, request.GET.get("exclude", "").split(","))
     fromlist = filter(None, request.GET.get("fromlist", "").split(","))
     unique = request.GET.get("unique")
+    try:
+        filter_query  = json.loads(urllib.unquote(request.GET.get("filter_query")))
+    except:
+        filter_query = {}
+    try:
+        exclude_query = json.loads(urllib.unquote(request.GET.get("exclude_query")))
+    except:
+        exclude_query = {}
 
     Model = get_model(model_str)
 
-    filter_query = {"%s__icontains"%field: query}
-    exclude_query = {"pk__in": exclude}
+    if (len(filter_query) + len(exclude_query)) == 0:
+        filter_query = {"%s__icontains"%field: query}
+        exclude_query = {"pk__in": exclude}
+
     if fromlist:
         filter_query.update({"pk__in": fromlist })
-
 
     qs = Model.objects.filter(**filter_query).exclude(**exclude_query)
 
