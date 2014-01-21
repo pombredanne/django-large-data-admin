@@ -15,8 +15,14 @@ def get_json(request):
     exclude = filter(None, request.GET.get("exclude", "").split(","))
     fromlist = filter(None, request.GET.get("fromlist", "").split(","))
     unique = request.GET.get("unique")
-    filter_query  = json.loads(urllib.unquote(request.GET.get("filter_query", {})))
-    exclude_query = json.loads(urllib.unquote(request.GET.get("exclude_query", {})))
+    try:
+        filter_query  = json.loads(urllib.unquote(request.GET.get("filter_query")))
+    except:
+        filter_query = {}
+    try:
+        exclude_query = json.loads(urllib.unquote(request.GET.get("exclude_query")))
+    except:
+        exclude_query = {}
 
     Model = get_model(model_str)
 
