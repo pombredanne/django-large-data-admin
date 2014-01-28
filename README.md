@@ -31,7 +31,7 @@ and to root urls
 ### Components
 
 #### Fields
-* db_fields.ManyToManyField(RelatedModel)
+* db_fields.ManyToManyField(RelatedModel, search_field)
 * db_fields.ForeignKey(RelatedModel, search_fied)
 
 #### Filters
@@ -39,7 +39,9 @@ and to root urls
 
 If filter_query and exclude_query are empty dictionaries implicit filter is created from model and field attributes:
 
-    Model.objects.filter(field_icontains=input_value)
+``` python
+Model.objects.filter(field_icontains=input_value)
+```
 
 If filter_query or exclude_query are present no implicit filter is added to query.
 
@@ -51,14 +53,36 @@ You can use patterns FIELD_NAME and INPUT_VALUE in filter_query and exclude_quer
 
 Example project is in [example_project](example_project) directory, [models.py](example_project/lda_example/models.py) for fields, [admin.py](example_project/lda_example/admin.py) for filters.
 
+#### DB fields
+
+``` python
+from large_data_admin import db_fields as lda
+
+class MainModel(models.Model):
+    name = models.CharField()
+
+class RelatedModel(models.Model):
+    type = models.CharField()
+    main = lda.ForeignKey(MainModel, "name")
+    
+class OtherModel(models.Model):
+    number = models.CharField()
+    related = models.ManyToManyModel(RelatedModel, "type")
+```
+
+#### Filters
+
 These example calls of get_ajax_filter are equal:
 
-    get_ajax_filter('Name', User, 'username')
-    get_ajax_filter('Name', User, 'username', { 'username_icontains': 'INPUT_VALUE' })
-    get_ajax_filter('Name', User, 'username', { 'FIELD_NAME_icontains': 'INPUT_VALUE' })
-    
+``` python
+get_ajax_filter('Name', User, 'username')
+get_ajax_filter('Name', User, 'username', { 'username_icontains': 'INPUT_VALUE' })
+get_ajax_filter('Name', User, 'username', { 'FIELD_NAME_icontains': 'INPUT_VALUE' })
+```
+
 And these two leads also to same query (but you can't write it with non empty field_query and without FIELD_NAME pattern):
 
-    get_ajax_filter('Name', User, 'fname,lname')
-    get_ajax_filter('Name', User, 'fname,lname', { 'FIELD_NAME_icontains': 'INPUT_VALUE' })
-    
+``` python
+get_ajax_filter('Name', User, 'fname,lname')
+get_ajax_filter('Name', User, 'fname,lname', { 'FIELD_NAME_icontains': 'INPUT_VALUE' })
+```
