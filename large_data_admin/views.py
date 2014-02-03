@@ -37,7 +37,7 @@ def get_json(request):
 
     if unique:
         try:  # XXX: needs prety check if DISTINCT is available, ticket #3
-            return HttpResponse(simplejson.dumps(list(qs.distinct(field).values_list("pk", field))))
+            return HttpResponse(simplejson.dumps(list(qs.distinct(field).values_list("pk", field).order_by(field))))
         except NotImplementedError:
             data = []
             unique_by_field = []
