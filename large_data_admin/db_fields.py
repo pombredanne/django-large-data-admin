@@ -45,14 +45,16 @@ class ForeignKey(models.ForeignKey):
         return (field_class, args, kwargs)
 
 class OneToOneField(models.OneToOneField):
-    def __init__(self, to, **kwargs):
+    def __init__(self, to, search_field, **kwargs):
         self.model_str = u"%s.%s"%(to.__module__, to.__name__)
+        self.search_field = search_field
         super(OneToOneField, self).__init__(to, **kwargs)
 
     def formfield(self, **kwargs):
         defaults = {
             'form_class': form_fields.ModelChoiceField,
             "model_str": self.model_str,
+            "search_field": self.search_field,
         }
         defaults.update(kwargs)
         return super(OneToOneField, self).formfield(**defaults)
