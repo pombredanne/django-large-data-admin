@@ -86,3 +86,7 @@ And these two leads also to same query (but you can't write it with non empty fi
 get_ajax_filter('Name', User, 'fname,lname')
 get_ajax_filter('Name', User, 'fname,lname', { 'FIELD_NAME_icontains': 'INPUT_VALUE' })
 ```
+
+
+[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/ondrejsika/django-large-data-admin/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
+
