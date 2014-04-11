@@ -1,5 +1,10 @@
 {% load i18n %}
-<script type="text/javascript" src="{{spec.STATIC_URL}}large_data_admin/jquery-1.9.1.min.js"></script>
+<script>
+    if(!window.jQuery) {
+        window.jQuery = django.jQuery;
+        window.$ = window.jQuery;
+    }
+</script>
 <script type="text/javascript">
 function perform_request(id, url, model, field, filter_query, exclude_query, callback){
     uri = url+"?query="+$("#"+id).val()+"&model="+model+"&field="+field+"&filter_query="+filter_query+"&exclude_query="+exclude_query+"&unique=true";
