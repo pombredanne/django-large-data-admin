@@ -26,14 +26,17 @@ function select_input2(id, selected_id, url, model, field, min_length, callback)
         }
     })
 }
-function select_input3(id, selected_id, url, model, field, min_length, callback){
-    $("#"+id).keyup(function() {
+
+
+function input3(target, id, selected_id, url, model, field, min_length, callback){
+    return function(){
         if ($("#"+id).val().length > min_length - 1){
             $.get(url+"?query="+$("#"+id).val()+"&model="+model+"&field="+field+"&fromlist="+$("#"+selected_id).val(), function (d){
                 d = JSON.parse(d);
-                $("#"+id+"_list").empty();
+                console.log(d);
+                $(target).empty();
                 d.forEach(function (i) {
-                    $("#"+id+"_list").append("<li><a id=\""+id+i[0]+"\">"+i[1]+" #"+i[0]+"</a></li>");
+                    $(target).append("<li><a id=\""+id+i[0]+"\">"+i[1]+" #"+i[0]+"</a></li>");
                     $("#"+id+i[0]).click(function(){
                         $("#"+id+"_list").empty();
                         $("#"+id).val("");
@@ -42,11 +45,33 @@ function select_input3(id, selected_id, url, model, field, min_length, callback)
                 })
             })
         }
-    })
+    }
+}
+
+
+
+function input4(target, id, selected_id, url, model, field, min_length, callback){
+            $.get(url+"?query="+$("#"+id).val()+"&model="+model+"&field="+field+"&fromlist="+$("#"+selected_id).val(), function (d){
+                d = JSON.parse(d);
+                console.log(11, d);
+                $(target).empty();
+                d.forEach(function (i) {
+                    $(target).append("<li><a id=\""+id+i[0]+"\">"+i[1]+" #"+i[0]+"</a></li>");
+                    $("#"+id+i[0]).click(function(){
+                        $("#"+id+"_list").empty();
+                        $('#'+id+i[0]).remove()
+                        callback(i);
+                    })
+                })
+            })
+}
+
+function select_input3(id, selected_id, url, model, field, min_length, callback){
+    target = "#"+id+"_list";
+    $("#"+id).keyup(input3(target, id, selected_id, url, model, field, min_length, callback))
 }
 
 $(document).ready(function(){
-
     select_input2("{{name}}_add", "{{name}}", "/large_data_admin/get/", "{{model_str}}", "{{field}}", 2, function (i){
         selected = str2intList($("#{{name}}").val())
         selected.push(i[0])
@@ -74,7 +99,13 @@ $(document).ready(function(){
     });
 
     $("#{{name}}_list").click(function () {
-        popup = window.open("/large_data_admin/m2m/list/{{model_str}}/?q="+$("#{{name}}").val(),'{{name}}_lda_m2m','width=700,height=500,toolbar=0,menubar=0,location=0,status=1,scrollbars=1,resizable=1,left=0,top=0');
+        input4('#{{name}}_list_remove', "{{name}}_rm", "{{name}}", "/large_data_admin/get/", "{{model_str}}", "{{field}}", 2, function (i){
+        console.log(i);
+            selected = str2intList($("#{{name}}").val())
+        index = selected.indexOf(i[0]);
+        selected.remove(index);
+        $("#{{name}}").val(selected.toString());
+    });
     });
 
 });
@@ -93,7 +124,8 @@ $(document).ready(function(){
     </div>
     <div class="m2mlw-block">
         <input id="{{name}}_selected" type="text" class="m2mlw-selected" disabled>
-        <a id="{{name}}_list" class="button">list</a>
-        <a id="{{name}}_remove" class="button">remove</a>
+        <a id="{{name}}_list" class="button">list &amp; remove</a>
     </div>
+</div>
+<div id="{{name}}_list_remove" class="list-inline" style="overflow-y: auto; max-height: 100px">
 </div>

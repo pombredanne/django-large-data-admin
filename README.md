@@ -64,7 +64,7 @@ class MainModel(models.Model):
 class RelatedModel(models.Model):
     type = models.CharField()
     main = lda.ForeignKey(MainModel, "name")
-    
+
 class OtherModel(models.Model):
     number = models.CharField()
     related = models.ManyToManyModel(RelatedModel, "type")

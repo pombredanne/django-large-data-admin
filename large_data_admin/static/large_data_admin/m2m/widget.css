@@ -23,3 +23,9 @@
 input {
     width: 160px;
 }
+
+.list-inline li {
+    display: inline;
+    margin-right: 15px;
+
+}
